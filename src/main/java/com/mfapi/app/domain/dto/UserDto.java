@@ -10,8 +10,6 @@ public class UserDto {
 	@JsonIgnore
 	private String password;
 	
-	
-	
 	public Integer getId() {
 		return id;
 	}

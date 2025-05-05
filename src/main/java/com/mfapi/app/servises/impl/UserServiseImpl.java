@@ -1,5 +1,6 @@
 package com.mfapi.app.servises.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,9 @@ public class UserServiseImpl implements UserServise{
 		Optional<User> obj = userRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuario não encontrado"));
  	}
+	
+	public List<User> findAll(){
+		return userRepository.findAll();
+	}
 
 }
