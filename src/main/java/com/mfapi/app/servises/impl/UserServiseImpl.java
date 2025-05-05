@@ -3,10 +3,12 @@ package com.mfapi.app.servises.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mfapi.app.domain.User;
+import com.mfapi.app.domain.dto.UserDto;
 import com.mfapi.app.repositories.UserRepository;
 import com.mfapi.app.servises.UserServise;
 import com.mfapi.app.servises.exception.ObjectNotFoundException;
@@ -16,6 +18,9 @@ public class UserServiseImpl implements UserServise{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public User findById(Integer id) {
@@ -25,6 +30,11 @@ public class UserServiseImpl implements UserServise{
 	
 	public List<User> findAll(){
 		return userRepository.findAll();
+	}
+
+	@Override
+	public User create(UserDto userDto) {
+		return userRepository.save(modelMapper.map(userDto, User.class));
 	}
 
 }
