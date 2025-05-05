@@ -19,22 +19,21 @@ import com.mfapi.app.servises.UserServise;
 @RestController
 @RequestMapping(value = "/user")
 public class UserResource {
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private UserServise userServise;
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDto> findById(@PathVariable Integer id){
+	public ResponseEntity<UserDto> findById(@PathVariable Integer id) {
 		return ResponseEntity.ok().body(modelMapper.map(userServise.findById(id), UserDto.class));
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<UserDto>> findAll(){
-		List<User> userList = userServise.findAll();
-		List<UserDto> listUserDto = userList.stream().map(x -> modelMapper.map(x, UserDto.class)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listUserDto);
+	public ResponseEntity<List<UserDto>> findAll() {
+		return ResponseEntity.ok().body(userServise.findAll().stream().map(x -> modelMapper.map(x, UserDto.class))
+				.collect(Collectors.toList()));
 	}
 }
