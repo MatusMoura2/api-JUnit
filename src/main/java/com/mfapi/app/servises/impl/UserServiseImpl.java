@@ -11,6 +11,7 @@ import com.mfapi.app.domain.User;
 import com.mfapi.app.domain.dto.UserDto;
 import com.mfapi.app.repositories.UserRepository;
 import com.mfapi.app.servises.UserServise;
+import com.mfapi.app.servises.exception.DataIntegratyViolationException;
 import com.mfapi.app.servises.exception.ObjectNotFoundException;
 
 @Service
@@ -34,7 +35,15 @@ public class UserServiseImpl implements UserServise{
 
 	@Override
 	public User create(UserDto userDto) {
+		findByEmail(userDto);
 		return userRepository.save(modelMapper.map(userDto, User.class));
+	}
+	
+	private void findByEmail(UserDto userDto) {
+		Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+		if(optionalUser.isPresent()) {
+			throw new DataIntegratyViolationException("Email ja cadastrado no sistema");
+		}
 	}
 
 }

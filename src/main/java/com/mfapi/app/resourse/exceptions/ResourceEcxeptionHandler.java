@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
 
+import com.mfapi.app.servises.exception.DataIntegratyViolationException;
 import com.mfapi.app.servises.exception.ObjectNotFoundException;
 
 @RestControllerAdvice
@@ -21,5 +22,13 @@ public class ResourceEcxeptionHandler {
 		StandardError standardError = new StandardError(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				exception.getMessage(), httpRequest.getRequestURI());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+	}
+	
+	@ExceptionHandler(DataIntegratyViolationException.class)
+	public ResponseEntity<StandardError> dataIntegratyViolationException (DataIntegratyViolationException exception,
+			HttpServletRequest httpRequest) {
+		StandardError standardError = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(),
+				exception.getMessage(), httpRequest.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
 	}
 }
