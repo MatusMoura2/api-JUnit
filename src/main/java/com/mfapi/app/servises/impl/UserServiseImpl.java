@@ -39,9 +39,15 @@ public class UserServiseImpl implements UserServise{
 		return userRepository.save(modelMapper.map(userDto, User.class));
 	}
 	
+	@Override
+	public User update(UserDto userDto) {
+		findByEmail(userDto);
+		return userRepository.save(modelMapper.map(userDto, User.class));
+	}
+	
 	private void findByEmail(UserDto userDto) {
 		Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
-		if(optionalUser.isPresent()) {
+		if(optionalUser.isPresent() && !optionalUser.get().getId().equals(userDto.getEmail())) {
 			throw new DataIntegratyViolationException("Email ja cadastrado no sistema");
 		}
 	}

@@ -13,5 +13,6 @@ public interface UserServise {
 	User findById(Integer id);
 	List<User> findAll();
 	User create(UserDto userDto);
+	User update(UserDto userDto);
 	
 }
