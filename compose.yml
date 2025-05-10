@@ -1,21 +1,19 @@
-services:
-  app:
-    image: eclipse-temurin:17-jdk-alpine
-    container_name: mf-api-app
-    volumes:
-      - ./target:/app
-    working_dir: /app
-    command: ["java", "-jar", "mf-api.jar"]
-    ports:
-      - "8080:8080"
-    depends_on:
-      - h2
+version: '3.3'
 
-  h2:
-    image: oscarfonts/h2
-    container_name: h2-database
+networks:
+  aw-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - aw-network
     ports:
-      - "1521:1521"
-      - "81:81"
-    environment:
-      H2_OPTIONS: "-tcp -tcpAllowOthers -web -webAllowOthers"
+      - "9090:9090"

@@ -52,4 +52,9 @@ public class UserServiseImpl implements UserServise{
 		}
 	}
 
+	@Override
+	public void delete(Integer id) {
+		userRepository.deleteById(id);
+	}
+
 }

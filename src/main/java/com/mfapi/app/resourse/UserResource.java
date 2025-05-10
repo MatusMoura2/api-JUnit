@@ -4,10 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mfapi.app.domain.User;
 import com.mfapi.app.domain.dto.UserDto;
 import com.mfapi.app.servises.UserServise;
 
@@ -52,5 +51,11 @@ public class UserResource {
 	public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto userDto){
 		userDto.setId(id);
 		return ResponseEntity.ok().body(modelMapper.map(userServise.update(userDto), UserDto.class));
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<UserDto> delete(@PathVariable Integer id){
+		userServise.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
